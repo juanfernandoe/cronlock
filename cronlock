@@ -1,0 +1,43 @@
+#!/bin/bash
+
+while getopts ":r:s:c " opt; do
+  case $opt in
+    r) arg_r="$OPTARG"
+    ;;
+    s) arg_s="$OPTARG"
+    ;;
+    # c) arg_c="$OPTARG"
+    # ;;
+    \?) echo "Invalid option -$OPTARG" >&2
+    ;;
+  esac
+done
+
+
+if [ !$arg_r or $arg_r == "" ]; then
+    arg_r=1
+fi
+
+if [ !$arg_s or $arg_s == "" ]; then
+    arg_s=1
+fi
+
+
+arg_c="${BASH_ARGV[0]}"
+
+echo "cronlock repeat=$arg_r sleep=$arg_s $arg_c"
+
+
+# lockfile="/tmp/cronlock_"`echo -n $@ | md5sum | sed -e 's/[- ]//g'`".lock"
+# /usr/bin/flock -w 0 $lockfile $@
+
+
+lockfile="/tmp/cronlock_"`echo -n $arg_c | md5sum | sed -e 's/[- ]//g'`".lock"
+
+for (( c=0; c< $(($arg_r)); c++ ))
+do
+#    echo "Welcome $c times $@"
+   /usr/bin/flock -w 0 $lockfile $arg_c
+   echo ""
+   sleep $arg_s
+done
