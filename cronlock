@@ -14,15 +14,6 @@ while getopts ":r:s:c " opt; do
 done
 
 
-if [ !$arg_r or "$arg_r" == "" ]; then
-    arg_r=1
-fi
-
-if [ !$arg_s or "$arg_s" == "" ]; then
-    arg_s=1
-fi
-
-
 arg_c="${BASH_ARGV[0]}"
 
 echo "cronlock repeat=$arg_r sleep=$arg_s $arg_c"
