@@ -14,11 +14,11 @@ while getopts ":r:s:c " opt; do
 done
 
 
-if [ !$arg_r or $arg_r == "" ]; then
+if [ !$arg_r or $arg_r = "" ]; then
     arg_r=1
 fi
 
-if [ !$arg_s or $arg_s == "" ]; then
+if [ !$arg_s or $arg_s = "" ]; then
     arg_s=1
 fi
 
