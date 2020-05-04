@@ -1,5 +1,8 @@
 #!/bin/bash
 
+arg_r=1
+arg_s=0
+
 while getopts ":r:s:c " opt; do
   case $opt in
     r) arg_r="$OPTARG"
