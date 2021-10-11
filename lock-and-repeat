@@ -1,10 +1,11 @@
 #!/usr/bin/php -q
 <?php
+$opt = getopt('c:r:s:n:tL');
 
-$opt = getopt('c:r:s:tln:');
 
 // print_r($opt);
 // print_r($argv);
+// exit;
 
 $valid = (isset($opt['c']) && $opt['c']);
 
@@ -14,10 +15,10 @@ if (!$valid) {
 
     echo ("
     -c  string  Command to execute
-    -t          Show date and time on each execution
-    -r  int     Repetitions, -1 for infinite repetitions
-    -s  int     Seconds to sleep between repetitions
-    -l          Prevent parallel executions
+    -t          Show date and time on each execution, default true
+    -r  int     Repetitions, -1 for infinite repetitions, default infinite
+    -s  int     Seconds to sleep between repetitions, default 1
+    -L          Allow parallel executions
     ");
 
     echo "\n\n";
