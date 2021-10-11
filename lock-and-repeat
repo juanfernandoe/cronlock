@@ -31,12 +31,14 @@ $opt['t'] = isset($opt['t']) && $opt['t'] != 'false';
 $opt['l'] = isset($opt['l']) && $opt['l'] != 'false';
 
 $lock_key = 'lock-and-repeat-' . md5(json_encode($argv)) . '.lock';
+$lock_file = "/tmp/{$lock_key}";
+
 // echo "{$lock_key}\n";
 
 $lock_fp = null;
 
 if ($opt['l']) {
-    $lock_fp = fopen("/tmp/{$lock_key}", "w");
+    $lock_fp = fopen($lock_file, "w");
 
     if (!flock($lock_fp, LOCK_EX | LOCK_NB)) {
         echo "Couldn't get a lock!\n";
@@ -66,4 +68,5 @@ while (true) {
 
 if ($lock_fp) {
     fclose($lock_fp);
+    unlink($lock_file);
 }
