@@ -38,7 +38,7 @@ $lock_file = "/tmp/{$lock_key}";
 
 $lock_fp = null;
 
-if ($opt['L']) {
+if (!$opt['L']) {
     $lock_fp = fopen($lock_file, "w");
 
     if (!flock($lock_fp, LOCK_EX | LOCK_NB)) {
