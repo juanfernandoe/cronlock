@@ -26,7 +26,7 @@ if (!$valid) {
 }
 
 $opt['r'] = isset($opt['r']) ? (int) $opt['r'] : 5;
-$opt['s'] = isset($opt['s']) ? (float) $opt['s'] : 0;
+$opt['s'] = isset($opt['s']) ? (float) $opt['s'] : 1;
 $opt['n'] = isset($opt['n']) ? (int) $opt['n'] : 2;
 $opt['t'] = isset($opt['t']);
 $opt['L'] = isset($opt['L']);
