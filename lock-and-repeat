@@ -15,9 +15,9 @@ if (!$valid) {
 
     echo ("
     -c  string  Command to execute
-    -t          Show date and time on each execution, default true
     -r  int     Repetitions, -1 for infinite repetitions, default infinite
     -s  int     Seconds to sleep between repetitions, default 1
+    -t          Show date and time on each execution, default true
     -L          Allow parallel executions
     ");
 
@@ -28,8 +28,8 @@ if (!$valid) {
 $opt['r'] = isset($opt['r']) ? (int) $opt['r'] : 5;
 $opt['s'] = isset($opt['s']) ? (float) $opt['s'] : 0;
 $opt['n'] = isset($opt['n']) ? (int) $opt['n'] : 2;
-$opt['t'] = isset($opt['t']) && $opt['t'] != 'false';
-$opt['l'] = isset($opt['l']) && $opt['l'] != 'false';
+$opt['t'] = isset($opt['t']);
+$opt['L'] = isset($opt['L']);
 
 $lock_key = 'lock-and-repeat-' . md5(json_encode($argv)) . '.lock';
 $lock_file = "/tmp/{$lock_key}";
@@ -38,7 +38,7 @@ $lock_file = "/tmp/{$lock_key}";
 
 $lock_fp = null;
 
-if ($opt['l']) {
+if ($opt['L']) {
     $lock_fp = fopen($lock_file, "w");
 
     if (!flock($lock_fp, LOCK_EX | LOCK_NB)) {
