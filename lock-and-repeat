@@ -1,0 +1,69 @@
+#!/usr/bin/php -q
+<?php
+
+$opt = getopt('c:r:s:tln:');
+
+// print_r($opt);
+// print_r($argv);
+
+$valid = (isset($opt['c']) && $opt['c']);
+
+if (!$valid) {
+    echo "Invalid command arguments\n\n";
+    echo "The following options are available:\n";
+
+    echo ("
+    -c  string  Command to execute
+    -t          Show date and time on each execution
+    -r  int     Repetitions, -1 for infinite repetitions
+    -s  int     Seconds to sleep between repetitions
+    -l          Prevent parallel executions
+    ");
+
+    echo "\n\n";
+    exit;
+}
+
+$opt['r'] = isset($opt['r']) ? (int) $opt['r'] : 5;
+$opt['s'] = isset($opt['s']) ? (float) $opt['s'] : 0;
+$opt['n'] = isset($opt['n']) ? (int) $opt['n'] : 2;
+$opt['t'] = isset($opt['t']) && $opt['t'] != 'false';
+$opt['l'] = isset($opt['l']) && $opt['l'] != 'false';
+
+$lock_key = 'lock-and-repeat-' . md5(json_encode($argv)) . '.lock';
+// echo "{$lock_key}\n";
+
+$lock_fp = null;
+
+if ($opt['l']) {
+    $lock_fp = fopen("/tmp/{$lock_key}", "w");
+
+    if (!flock($lock_fp, LOCK_EX | LOCK_NB)) {
+        echo "Couldn't get a lock!\n";
+        fclose($lock_fp);
+        exit;
+    }
+}
+
+while (true) {
+    sleep(0.1);
+
+    if ($opt['t']) {
+        echo date("Y-m-d H:i:s:\n");
+    }
+
+    system($opt['c']);
+    echo str_repeat("\n", $opt['n']);
+
+    sleep((int) $opt['s']);
+
+    $opt['r']--;
+
+    if ($opt['r'] === 0) {
+        break;
+    }
+}
+
+if ($lock_fp) {
+    fclose($lock_fp);
+}
