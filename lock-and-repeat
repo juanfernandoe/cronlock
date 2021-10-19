@@ -1,5 +1,8 @@
 #!/usr/bin/php -q
 <?php
+ini_set('max_execution_time', 0);
+
+
 $opt = getopt('c:r:s:n:tL');
 
 
